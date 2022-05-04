@@ -6,16 +6,22 @@ function reducer(state, action){
                 message: action.payload.message,
                 title: action.payload.title,
                 done: false
-            }
-            const newListOfNotesAddedOne = [...state.lstTask, newNote]
+            };
+            const newListOfNotesAddedOne = [...state.lstTask, newNote];
             const newStateAddNote = {
                 ...state, lstTask: newListOfNotesAddedOne
-            }
-            return newStateAddNote
+            };
+            return newStateAddNote;
         case 'remove-note':
-            return state
+            const newLstTaskWithoutPayloadNote = state.lstTask.filter(note => note.id !== action.payload.id);
+            const newStateWithNoteDeleted = {...state, lstTask: newLstTaskWithoutPayloadNote};
+            return newStateWithNoteDeleted;
         case 'update-note':
-            return state
+            const newlstTask = state.lstTask.filter(note => note.id !== action.payload.id);
+            const newlstTaskWithModification = [...newlstTask, action.payload];
+            const newStateModifiedCheckbox = {...state, lstTask: newlstTaskWithModification};
+
+            return newStateModifiedCheckbox;
     }
 }
 

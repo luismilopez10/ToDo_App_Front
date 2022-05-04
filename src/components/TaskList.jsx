@@ -23,13 +23,25 @@ const TaskList = () => {
         .then(response => response.json());
     }
 
-    const onCheckbox = (event, note) => {
+    const onCheckbox = async (event, note) => {
         const checked = event.currentTarget.checked;
-        dispatch({
-            type: 'update-note',
-            payload: {...note,
-            done: checked}
-        })
+        
+        const noteWithCheckboxInfo = {...note, done: checked}
+
+        const requestOptions = {
+            method: 'PUT',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify(noteWithCheckboxInfo)
+        }
+
+        fetch(`http://localhost:8081/api/v1/notes`, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                dispatch({
+                    type: 'update-note',
+                    payload: data
+                });
+            });  
     }
 
     const onDelete = (note) => {

@@ -6,30 +6,31 @@ function reducer(state, action){
                 ...state,
                 lstNotes: action.payload
             }
+
             return stateWithAllNotes;
 
         case 'add-note':
-            const newNote = {
-                id: Math.floor(Math.random() * 100),
-                message: action.payload.message,
-                title: action.payload.title,
-                done: false
-            };
+            const newNote = action.payload;
+
             const newListOfNotesAddedOne = [...state.lstNotes, newNote];
+
             const newStateAddNote = {
                 ...state, lstNotes: newListOfNotesAddedOne
             };
+
             return newStateAddNote;
 
         case 'remove-note':
             const newlstNotesWithoutPayloadNote = state.lstNotes.filter(note => note.id !== action.payload.id);
+
             const newStateWithNoteDeleted = {...state, lstNotes: newlstNotesWithoutPayloadNote};
+
             return newStateWithNoteDeleted;
 
         case 'update-note':
-            const newlstNotes = state.lstNotes.filter(note => note.id !== action.payload.id);
-            const newlstNotesWithModification = [...newlstNotes, action.payload];
-            const newStateModifiedCheckbox = {...state, lstNotes: newlstNotesWithModification};
+            const newlstNotes = state.lstNotes.map(note => note.id === action.payload.id ? action.payload : note);
+
+            const newStateModifiedCheckbox = {...state, lstNotes: newlstNotes};
 
             return newStateModifiedCheckbox;
     }

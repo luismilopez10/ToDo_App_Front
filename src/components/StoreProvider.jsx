@@ -8,7 +8,7 @@ const initialState = {
         message: '',
         done: false
     },
-    lstTask: [
+    lstNotes: [
         {
             id: '0',
             title: 'Title by default',

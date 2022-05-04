@@ -1,5 +1,13 @@
 function reducer(state, action){
     switch(action.type){
+
+        case 'get-notes':
+            const stateWithAllNotes = {
+                ...state,
+                lstNotes: action.payload
+            }
+            return stateWithAllNotes;
+
         case 'add-note':
             const newNote = {
                 id: Math.floor(Math.random() * 100),
@@ -7,19 +15,21 @@ function reducer(state, action){
                 title: action.payload.title,
                 done: false
             };
-            const newListOfNotesAddedOne = [...state.lstTask, newNote];
+            const newListOfNotesAddedOne = [...state.lstNotes, newNote];
             const newStateAddNote = {
-                ...state, lstTask: newListOfNotesAddedOne
+                ...state, lstNotes: newListOfNotesAddedOne
             };
             return newStateAddNote;
+
         case 'remove-note':
-            const newLstTaskWithoutPayloadNote = state.lstTask.filter(note => note.id !== action.payload.id);
-            const newStateWithNoteDeleted = {...state, lstTask: newLstTaskWithoutPayloadNote};
+            const newlstNotesWithoutPayloadNote = state.lstNotes.filter(note => note.id !== action.payload.id);
+            const newStateWithNoteDeleted = {...state, lstNotes: newlstNotesWithoutPayloadNote};
             return newStateWithNoteDeleted;
+
         case 'update-note':
-            const newlstTask = state.lstTask.filter(note => note.id !== action.payload.id);
-            const newlstTaskWithModification = [...newlstTask, action.payload];
-            const newStateModifiedCheckbox = {...state, lstTask: newlstTaskWithModification};
+            const newlstNotes = state.lstNotes.filter(note => note.id !== action.payload.id);
+            const newlstNotesWithModification = [...newlstNotes, action.payload];
+            const newStateModifiedCheckbox = {...state, lstNotes: newlstNotesWithModification};
 
             return newStateModifiedCheckbox;
     }

@@ -1,10 +1,27 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Store } from './StoreProvider'
 import { BiTrashAlt } from 'react-icons/bi'
 
 const TaskList = () => {
 
     const {state, dispatch} = useContext(Store)
+
+    useEffect(()=>{
+        let listOfNote = fetchAllNotes()
+        .then(notes=>{
+            let action = {
+                type: 'get-notes',
+                payload: notes
+            };
+
+            dispatch(action);
+        })
+    }, [])
+
+    const fetchAllNotes = async() => {
+        return await fetch(`http://localhost:8081/api/v1/notes`)
+        .then(response => response.json());
+    }
 
     const onCheckbox = (event, note) => {
         const checked = event.currentTarget.checked;
@@ -26,7 +43,7 @@ const TaskList = () => {
     <div>
         <h1>Your tasks</h1>
         <ul>
-            {state.lstTask.map(note => {
+            {state.lstNotes.map(note => {
                 return (
                 <li key={note.id} className='task' style={note.done ? {textDecoration: 'line-through'} : {}}>
                     <h3>{note.title} <BiTrashAlt onClick={() => onDelete(note)} /></h3>
